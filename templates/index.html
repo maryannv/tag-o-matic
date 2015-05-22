@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/javascript">
+      $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+
+      function lookupUrl(){
+        $("#urloutput").html("<h4>Loading...</h4>");
+
+        // ajax - reads url from #urlinput, writes result to #urloutput
+        $.ajax({
+          dataType: "json",
+          url: $SCRIPT_ROOT + '/_parse_url',
+          data: { urlinput: $('input[name="urlinput"]').val() },
+          success: function(data) {
+            if (data.result) {
+              $("#urloutput").html(data.result);
+            }
+            else if (data.error){
+              // notify user of error
+              alert(data.error);
+              $("#urloutput").html("");
+            }
+          },
+          timeout: 20000 // 20 second timeout
+        }).fail( function( xhr, status ) {
+          alert("Could not process URL");
+          $("#urloutput").html("");
+        });
+
+        return false;
+      }
+
+      // call lookupUrl() when #parseurl button clicked, or hit "enter" in #urlinput
+      $(function() {
+        $('button#parseurl').bind('click', function() {
+          lookupUrl();
+          $(this).blur();
+        });
+        $('input[name="urlinput"]').keydown(function(event) {
+          // Detect hitting "enter" in the text box
+          if (event.keyCode == 13) {
+              lookupUrl()
+              $(this).blur();
+              return false;
+           }
+         });
+      });
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div style="float:right;">
+        <a href="https://github.com/maryannv/tag-o-matic">
+          <img style="width:39px" src="{{ url_for('static', filename='GitHub-Mark-120px-plus.png') }}"/>
+        </a>
+      </div>
+      <h1>Maryann's Tag-o-Matic</h1>
+      <div style="background-color:#710866;padding:28px 25px 30px 25px;">
+        <button id="parseurl" class="btn btn-primary" style="margin-right:5px;">Process Url</button>
+        <input name="urlinput" type="text" value="http://www.slack.com" style="width:50%;margin:3px 0px;min-height:28px" />
+      </div>
+      <div id="urloutput"></div>
+    </div>
+  </body>
+</html>

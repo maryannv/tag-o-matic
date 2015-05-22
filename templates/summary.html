@@ -1,0 +1,48 @@
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+  function tagButtonClick(obj, tagName){
+    // toggle button style and tag highlighting in source
+    $(obj).toggleClass("btn-success");
+    $( "." + tagName ).toggleClass("tagmarker");
+
+    // deselect button, jquery bug: http://stackoverflow.com/questions/3861307/
+    $(obj).blur();
+  }
+</script>
+
+<!-- TAG COUNTS section -->
+<h3>Tag Counts</h3>
+<div>
+  {% for key, value in tagcounts|dictsort(false, 'key') %}
+    <button class="btn btn-default" onclick="tagButtonClick(this, '{{-key|get_tag_uid(tagcounts)}}');return false;">{{ key }} - {{ value }}</button>
+  {% endfor %}
+</div>
+
+<!-- SOURCE section -->
+<h3>Source</h3>
+<div>
+  {%- for s in rawstrings -%}
+    {%- with prev = [0] -%}{# cursor for rendering, use array due to jinja2 variable scope issue -#}
+
+      {%- set line_taginfo = lines_info|get_taginfo_for_line(loop.index) -%}
+      {%- for taginfo in line_taginfo -%}
+        {%- set startindex = taginfo[0] -%}
+        {%- set tagname = taginfo[1] -%}
+        {%- set tagstart = startindex+1 -%}
+        {%- set tagend = tagstart + tagname|length-1 -%}
+
+        <span class="htmlsource">{{s|string_slice(prev[0], tagstart)}}</span><span class="{{tagname|get_tag_uid(tagcounts)}} htmlsource">{{s|string_slice(tagstart, tagend+1)}}</span>
+
+        {%- if prev.pop() %}{% endif -%}
+        {%- if prev.append(tagend+1) %}{% endif -%}
+      {%- endfor -%}
+
+      {%- if prev[0] < s|length -%}
+        <span class="htmlsource">{{s|string_slice(prev[0], s|length)}}</span>
+      {%- endif -%}
+      <br>
+
+    {%- endwith -%}
+  {%- endfor -%}
+</div>

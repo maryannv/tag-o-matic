@@ -1,0 +1,25 @@
+body {
+  margin:30px;
+  font-family: Lato, appleLogo, sans-serif;
+}
+
+h3 {
+  border-bottom: 1px solid black;
+}
+
+.btn {
+  margin-bottom: 3px;
+}
+
+.tagmarker {
+  color: white;
+  background-color:#5cb85c;
+}
+
+.htmlsource {
+  white-space:pre-wrap;
+}
+
+.btn-primary {
+  background-color:#4c9689;
+}
