@@ -7,7 +7,7 @@ Overview:
 - Built using Flask. 
 - Uses [requests](https://requests.readthedocs.org/en/v1.1.0/api/index.html) library to fetch and decode html content. 
 - Uses [HTMLParser](https://docs.python.org/2/library/htmlparser.html) to find indexes of all start tags in the html source. During parsing, also builds a dictionary of tags to counts.
-- The source is displayed by surrounding the content with <span> tags. Opening tags are placed in their own spans with a css class unique to that tag. This allows easy highlight toggling of all such spans using a jQuery selector.
+- The source is displayed by surrounding the content with span tags. Opening tags are placed in their own spans with a css class unique to that tag. This allows easy highlight toggling of all such spans using a jQuery selector.
 
 
 Code of interest is in: tag_app.py, TagHTMLParser.py, templates/..., static/...
