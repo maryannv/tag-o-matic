@@ -3,7 +3,7 @@ Tag-o-matic examines the html for any url, and displays the tag counts and html 
 
 https://secure-brushlands-5655.herokuapp.com/
 
-Overview
+Overview:
 - Built using Flask. 
 - Uses [requests](https://requests.readthedocs.org/en/v1.1.0/api/index.html) library to fetch and decode html content. 
 - Uses [HTMLParser](https://docs.python.org/2/library/htmlparser.html) to find indexes of all start tags in the html source. During parsing, also builds a dictionary of tags to counts.
